@@ -1,0 +1,29 @@
+Source: php-memcached
+Section: php
+Priority: optional
+Maintainer: Guillaume Plessis <gui@dotdeb.org>
+Build-Depends: debhelper (>= 9),
+               dh-php,
+               libmemcached-dev (>= 1.0.18),
+               php7.0-dev,
+               php7.0-igbinary,
+               php7.0-msgpack,
+               pkg-config
+Standards-Version: 3.9.6
+Homepage: http://pecl.php.net/package/memcached
+
+Package: php7.0-memcached
+Architecture: any
+Depends: ucf,
+         php7.0-igbinary,
+         php7.0-msgpack,
+         ${misc:Depends},
+         ${php:Depends},
+         ${shlibs:Depends}
+Description: memcached extension module for PHP, uses libmemcached
+ Memcached is a caching daemon designed especially for
+ dynamic web applications to decrease database load by
+ storing objects in memory.
+ .
+ This extension uses libmemcached library to provide
+ API for communicating with memcached servers.

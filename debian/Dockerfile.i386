@@ -1,0 +1,40 @@
+# This is a generic Dockerfile to ease Debian packaging
+#
+# Requirements:
+#   * Docker >= 1.5
+# Usage:
+#   # docker build -t build-jessie-i386-php70 -f debian/Dockerfile.i386 .
+#   # docker run build-jessie-i386-php70
+#   # ID=$(docker ps -l -q)
+#   # docker cp $ID:/usr/src ~/Downloads/
+#   # docker rm $ID
+
+FROM dotdeb/debian:jessie-i386
+MAINTAINER Guillaume Plessis "gui@dotdeb.org"
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get dist-upgrade -y
+
+RUN apt-get install -y curl
+
+RUN echo "deb http://packages.dotdeb.org/ jessie all" > /etc/apt/sources.list.d/dotdeb_packages.list
+RUN curl -q http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+
+RUN apt-get update
+RUN apt-get dist-upgrade -y
+
+RUN apt-get install -y build-essential devscripts equivs libwww-perl
+
+ADD debian/control /root/
+RUN mk-build-deps --install --tool 'apt-get -y' --remove /root/control && rm -f /root/control
+
+ADD . /usr/src/builddir
+WORKDIR /usr/src/builddir
+
+RUN curl -Lo /usr/src/php-memcached_2.2.0-1-7cb0c48.orig.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/7cb0c48c8da8fbcfdd04350338d6ebef15ddcd14.tar.gz
+#RUN uscan --download-current-version
+RUN dpkg-buildpackage
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/builddir
