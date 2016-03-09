@@ -33,7 +33,7 @@ RUN mk-build-deps --install --tool 'apt-get -y' --remove /root/control && rm -f 
 ADD . /usr/src/builddir
 WORKDIR /usr/src/builddir
 
-RUN curl -Lo /usr/src/php-memcached_2.2.0-1-7cb0c48.orig.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/7cb0c48c8da8fbcfdd04350338d6ebef15ddcd14.tar.gz
+RUN curl -Lo /usr/src/php-memcached_2.2.0-2-52c644b.orig.tar.gz https://github.com/php-memcached-dev/php-memcached/archive/52c644be2275f837a42c364f86dcf8592c81f679.tar.gz
 #RUN uscan --download-current-version
 RUN dpkg-buildpackage
 
