@@ -1,3 +1,9 @@
+php-memcached (2.2.0-2-52c644b-1~dotdeb+8.1) stable; urgency=medium
+
+  * Imported Upstream version 2.2.0-2-52c644b
+
+ -- Guillaume Plessis <gui@dotdeb.org>  Wed, 09 Mar 2016 00:30:03 +0000
+
 php-memcached (2.2.0-1-7cb0c48-1~dotdeb+8.1) stable; urgency=low
 
   * Imported Upstream version 2.2.0-1-7cb0c48
