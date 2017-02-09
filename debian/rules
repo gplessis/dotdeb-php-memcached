@@ -3,53 +3,44 @@
 SHELL=/bin/sh -e
 
 PECL_NAME    := $(shell dpkg-parsechangelog -SSource | sed -e s/php-//)
+SOURCE_DIR   := $(shell ls -1d $(PECL_NAME)-*)
 INSTALL_ROOT := $(CURDIR)/debian/php7.0-$(PECL_NAME)
 
-PHP_VERSIONS := $(shell phpquery -V)
-
-CONFIGURE_TARGETS := $(addprefix configure-,$(addsuffix -stamp,$(PHP_VERSIONS)))
-BUILD_TARGETS     := $(addprefix build-,$(addsuffix -stamp,$(PHP_VERSIONS)))
-INSTALL_TARGETS   := $(addprefix install-,$(addsuffix -stamp,$(PHP_VERSIONS)))
-CLEAN_TARGETS     := $(addprefix clean-,$(addsuffix -stamp,$(PHP_VERSIONS)))
+PHP_VERSIONS := $(shell /usr/sbin/phpquery -V)
 
 %:
-	dh $@ --with php
+	dh $@ --with php --sourcedirectory=$(SOURCE_DIR)
 
-override_dh_auto_configure: $(CONFIGURE_TARGETS)
-override_dh_auto_build: $(BUILD_TARGETS)
-override_dh_auto_install: $(INSTALL_TARGETS)
+override_dh_auto_configure:
+	for v in $(PHP_VERSIONS); do \
+	  cp -a $(CURDIR)/$(SOURCE_DIR) $(CURDIR)/build-$$v; \
+	  cd $(CURDIR)/build-$$v; \
+	  phpize$$v; \
+	done
+	cd $(SOURCE_DIR) && phpize
+	for v in $(PHP_VERSIONS); do \
+	  dh_auto_configure --builddirectory=$(CURDIR)/build-$$v --sourcedirectory=$(SOURCE_DIR) -- \
+		  --with-php-config=/usr/bin/php-config$$v \
+		  --enable-$(PECL_NAME) \
+		  --enable-memcached-json \
+		  --enable-memcached-igbinary \
+		  --enable-memcached-msgpack; \
+	done
 
-override_dh_auto_clean: $(CLEAN_TARGETS)
-	-rm $(CONFIGURE_TARGETS) $(BUILD_TARGETS) $(INSTALL_TARGETS) $(CLEAN_TARGETS)
+override_dh_auto_build:
+	for v in $(PHP_VERSIONS); do \
+	  dh_auto_build --builddirectory=$(CURDIR)/build-$$v --sourcedirectory=$(SOURCE_DIR); \
+	done
 
-#configure-%-stamp: SOURCE_DIR = $(shell ls -1d $(PECL_NAME)-*)
-configure-%-stamp:
-	#cd $(SOURCE_DIR) && phpize$*
-	#dh_auto_configure --sourcedirectory=$(SOURCE_DIR) -- --enable-$(PECL_NAME)
-	phpize$*
-	dh_auto_configure -- --enable-$(PECL_NAME) \
-		--enable-memcached-json \
-		--enable-memcached-igbinary \
-		--enable-memcached-msgpack \
-		--with-php-config=/usr/bin/php-config$*
-	touch configure-$*-stamp
+override_dh_auto_install:
+	for v in $(PHP_VERSIONS); do \
+	  dh_auto_install --builddirectory=$(CURDIR)/build-$$v --sourcedirectory=$(SOURCE_DIR) -- INSTALL_ROOT=$(INSTALL_ROOT); \
+	done
 
-#build-%-stamp: SOURCE_DIR = $(shell ls -1d $(PECL_NAME)-*)
-build-%-stamp:
-	#dh_auto_build --sourcedirectory=$(SOURCE_DIR)
-	dh_auto_build
-	touch build-$*-stamp
+override_dh_auto_clean:
+	for v in $(PHP_VERSIONS); do \
+	  dh_auto_clean --builddirectory=$(CURDIR)/build-$$v --sourcedirectory=$(SOURCE_DIR); \
+	  rm -rf $(CURDIR)/build-$$v; \
+	done
+	cd $(SOURCE_DIR) && phpize$$v --clean
 
-#install-%-stamp: SOURCE_DIR = $(shell ls -1d $(PECL_NAME)-*)
-install-%-stamp:
-	#dh_auto_install --sourcedirectory=$(SOURCE_DIR) -- INSTALL_ROOT=$(INSTALL_ROOT)
-	dh_auto_install -- INSTALL_ROOT=$(INSTALL_ROOT)
-	touch install-$*-stamp
-
-#clean-%-stamp: SOURCE_DIR = $(shell ls -1d $(PECL_NAME)-*)
-clean-%-stamp:
-	#cd $(SOURCE_DIR) && phpize$* --clean
-	#dh_auto_clean --sourcedirectory=$(SOURCE_DIR)
-	phpize$* --clean
-	dh_auto_clean
-	touch clean-$*-stamp
