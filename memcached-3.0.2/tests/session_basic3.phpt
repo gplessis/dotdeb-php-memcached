@@ -7,6 +7,7 @@ if (!Memcached::HAVE_SESSION) print "skip";
 ?>
 --INI--
 session.save_handler = memcached
+memcached.sess_binary_protocol = Off
 --FILE--
 <?php
 include dirname (__FILE__) . '/config.inc';
@@ -21,7 +22,9 @@ session_write_close();
 $_SESSION = NULL;
 
 var_dump($_SESSION);
-session_start();
+session_start([
+	'read_and_close' => true
+]);
 var_dump($_SESSION);
 session_write_close();
 

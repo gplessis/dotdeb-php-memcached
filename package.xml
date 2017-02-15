@@ -19,13 +19,13 @@
  <lead>
   <name>Aaron Stone</name>
   <user>sodabrew</user>
-  <email>sodabrew@php.net</email>
+  <email>aaron@serendipity.cx</email>
   <active>yes</active>
  </lead>
- <date>2017-02-08</date>
- <time>18:00:58</time>
+ <date>2017-02-12</date>
+ <time>18:05:42</time>
  <version>
-  <release>3.0.1</release>
+  <release>3.0.2</release>
   <api>3.0.0</api>
  </version>
  <stability>
@@ -39,14 +39,13 @@ and the oldest actively tested version is 1.0.2. It is highly recommended to use
 libmemcached.
 
 Fixes
- * Add API entries for flushBuffers() and getAllKeys() (#316)
- * Ignore specific errors from memcached_dump for getAllKeys() with newer memcached servers (#315)
- * Fix compiling with memcached binary protocol enabled (#312)
- * Restore php_libmemcached_compat with workaround for missing memcached_exists (#314)
- * Travis CI purge old versions of memcached and libmemcached (#309)
+ * Update warning for touch command in binary protocol mode with libmemcached below 1.0.18 (#322)
+ * Add tests for 64-bit increment/decrement/incrementByKey/decrementByKey (#321)
+ * Fix tests for 32-bit increment/decrement/incrementByKey/decrementByKey (#319)
  </notes>
  <contents>
   <dir name="/">
+   <file md5sum="f9b7256e9d80542818b6e9f112bff122" name="tests/skipif.inc" role="test" />
    <file md5sum="0049a2e653da16929b460283c12c9acb" name="tests/001.phpt" role="test" />
    <file md5sum="9f849d92256f8a554b50a33703fb1d90" name="tests/version.phpt" role="test" />
    <file md5sum="c17d5f95f355d86212181a2a13fefad8" name="tests/bug_16084.phpt" role="test" />
@@ -74,7 +73,7 @@ Fixes
    <file md5sum="9a71d505497b31cda6e277bfa48b3216" name="tests/getserverlist.phpt" role="test" />
    <file md5sum="70406e137e7589f169baecb3b57b5ac4" name="tests/gh_21.phpt" role="test" />
    <file md5sum="8540045ccf5d2cb090d9fec246bcefeb" name="tests/gh_77.phpt" role="test" />
-   <file md5sum="a47bc3e30ecfe02b0ae46f58615e7092" name="tests/gh_90.phpt" role="test" />
+   <file md5sum="8f7572424986a2642c3c129d815c52d8" name="tests/gh_90.phpt" role="test" />
    <file md5sum="47ed4213b0903e162f45603cd67640d6" name="tests/invoke_callback.phpt" role="test" />
    <file md5sum="2ba97fc9e1196e5d70012e334fc4ede2" name="tests/invoke_callback_2.phpt" role="test" />
    <file md5sum="7a3baaf4c91c7bb6d908f5f480261cfc" name="tests/invoke_callback_twice.phpt" role="test" />
@@ -88,12 +87,12 @@ Fixes
    <file md5sum="8189657125af99b4e740e52a53c4ea0e" name="tests/session_badconf_locktime.phpt" role="test" />
    <file md5sum="28251fb9278d9371ec081a2f01c17c7e" name="tests/session_badconf_prefix.phpt" role="test" />
    <file md5sum="c97d7057df54033096a1c907c9e505d8" name="tests/session_badconf_servers.phpt" role="test" />
-   <file md5sum="d8c3e9d77c11e8744db0119387763847" name="tests/session_basic.phpt" role="test" />
-   <file md5sum="a19b056c07f6de9c20b338ad21309d0d" name="tests/session_basic2.phpt" role="test" />
-   <file md5sum="ef4e7958e585877810469d9b4e9dbe3b" name="tests/session_basic3.phpt" role="test" />
+   <file md5sum="33f552e9f433e2c21e2d1891fd77d322" name="tests/session_basic.phpt" role="test" />
+   <file md5sum="aa156bf7bb4462e9173317c7e6daaeac" name="tests/session_basic2.phpt" role="test" />
+   <file md5sum="515c05e73a3d1bb4e3ed6e58d256b8c4" name="tests/session_basic3.phpt" role="test" />
    <file md5sum="c7030c53a0a4a70db0eb9f4931b20efd" name="tests/set_large.phpt" role="test" />
    <file md5sum="bc001a6bdfc8535411aa509d9d40e95c" name="tests/setoptions.phpt" role="test" />
-   <file md5sum="fa0e7e1425a92d91ab0d1087ddcbebe7" name="tests/touch_binary.phpt" role="test" />
+   <file md5sum="5096ca152b3344f8dab6a2182c98ace0" name="tests/touch_binary.phpt" role="test" />
    <file md5sum="977a8c648fefbfdd0281146b99566046" name="tests/types.inc" role="test" />
    <file md5sum="2efee38de0a9ac21aa08195d2f028e66" name="tests/types_igbinary.phpt" role="test" />
    <file md5sum="eb026f27e4bf6341c7a113bceca0124c" name="tests/types_igbinary_multi.phpt" role="test" />
@@ -115,40 +114,42 @@ Fixes
    <file md5sum="bf2ce9e5237bf38806f1fff5d12c5b8f" name="tests/getmulti.phpt" role="test" />
    <file md5sum="5eb0205bdc38f8d95d053fd693eb2de8" name="tests/setmulti.phpt" role="test" />
    <file md5sum="e952363deea908c9078c52fdb017b36a" name="tests/cachecallback.phpt" role="test" />
-   <file md5sum="208178111d4d0c8766d907196c8a2e18" name="tests/incrdecr.phpt" role="test" />
+   <file md5sum="60e9de9c023f3e5ddf9322670de773d2" name="tests/incrdecr.phpt" role="test" />
+   <file md5sum="3927c7ce0fd35c4d9864edc130f84e17" name="tests/incrdecr_64.phpt" role="test" />
    <file md5sum="5aa2ce74a2f85d46236889b06de0d44a" name="tests/incrdecr_initial.phpt" role="test" />
    <file md5sum="8a4542d8276de516ec4624092d4b9a46" name="tests/incrdecr_invalid_key.phpt" role="test" />
-   <file md5sum="0020fe17813aaacfb84e11a06e1ac538" name="tests/incrdecr_bykey.phpt" role="test" />
+   <file md5sum="cd96b75c20864d2f8b4dec19254c2e06" name="tests/incrdecr_bykey.phpt" role="test" />
    <file md5sum="3925fe82126261b6589bd9cbf64a4568" name="tests/invalid_options.phpt" role="test" />
    <file md5sum="a3c63441b95710b3a83a3844778abf26" name="tests/keys.phpt" role="test" />
    <file md5sum="a4058bd7f5993894fb867bafa57097c8" name="tests/testdata.res" role="test" />
    <file md5sum="cb4b22ed0a91765f3be48e66b28118c9" name="tests/config.inc" role="test" />
    <file md5sum="6c0907cd401bc5bc51a9727d35d24493" name="tests/sasl_basic.phpt" role="test" />
    <file md5sum="1509b73bc84322e2cd07663657c53446" name="tests/getserverbykey.phpt" role="test" />
-   <file md5sum="be803c9176e73df6431b09ea72efd407" name="tests/gh_155.phpt" role="test" />
+   <file md5sum="74f839c2b03150a023aa48e8ea135aa9" name="tests/gh_155.phpt" role="test" />
    <file md5sum="66749ac07b531f834903b410d002d833" name="tests/get_flags.phpt" role="test" />
-   <file md5sum="48c9f2d7ee41562c154400ba03579e6a" name="tests/session_lock.phpt" role="test" />
+   <file md5sum="787ab9d0298f7eb2f4353608ab711a4a" name="tests/session_lock.phpt" role="test" />
+   <file md5sum="06abbfe6eddc6ef0d03780c596d55d80" name="tests/session_lazy_warning.phpt" role="test" />
    <file md5sum="b0425111164f5a2980a48e5c450c91d6" name="tests/session_regenerate.phpt" role="test" />
    <file md5sum="6f26dd1498b785b3047db40038b74a69" name="tests/stats.phpt" role="test" />
    <file md5sum="166976cf5634f94f8ae7ba5c34ab4516" name="tests/default_behavior.phpt" role="test" />
    <file md5sum="582ae0198d6acff8b43accb288a97a5f" name="tests/reset_keyprefix.phpt" role="test" />
-   <file md5sum="3782d5801d079f65b69ac102a2e92cb4" name="tests/session_lock-php71.phpt" role="test" />
-   <file md5sum="2c0cdbc676bf0d5de1d8ba5a3d89abcb" name="README.markdown" role="doc" />
+   <file md5sum="91401c7726d8fe32d303a472807f613c" name="tests/session_lock-php71.phpt" role="test" />
+   <file md5sum="e70dd48d484892fc07e6eb7c9a8d0ed6" name="README.markdown" role="doc" />
    <file md5sum="f15b54956edc11e9bf1c995385b433b4" name="CREDITS" role="doc" />
    <file md5sum="cb564efdf78cce8ea6e4b5a4f7c05d97" name="LICENSE" role="doc" />
-   <file md5sum="8aa7c7b661254721616714109edc83e3" name="ChangeLog" role="doc" />
+   <file md5sum="eaf63578c2a0d39283d9a0dca8cd7aa7" name="ChangeLog" role="doc" />
    <file md5sum="b2a07181e396e0342f24a8d54a2a4e85" name="memcached-api.php" role="doc" />
    <file md5sum="88bd51e1d3732c9aad8f0e301c61d159" name="memcached.ini" role="doc" />
    <file md5sum="543b3b1b8571c4b9c02eafee4a6f3fa3" name="fastlz/LICENSE" role="doc" />
    <file md5sum="4f12a0f41c7dd35205ac80b62ac10364" name="config.m4" role="src" />
    <file md5sum="cf775e2ff79d560509d887a4c5992196" name="config.w32" role="src" />
-   <file md5sum="791f61c3a5b3be7e25edb726fb9a3b40" name="php_memcached.c" role="src" />
-   <file md5sum="f233039cd475f64e89f45bee44ecc30a" name="php_memcached.h" role="src" />
+   <file md5sum="8e96a66bed627dad4934be8c58092c1b" name="php_memcached.c" role="src" />
+   <file md5sum="56283035795d4a98fc93af398dc23eab" name="php_memcached.h" role="src" />
    <file md5sum="15a9d58922652c5a7cb22fb4e851cb2b" name="php_memcached_private.h" role="src" />
-   <file md5sum="93604a7ebd0a4cefd7c0d745c8e62d45" name="php_memcached_session.c" role="src" />
+   <file md5sum="620dc83d0744bddacd845314acf54d98" name="php_memcached_session.c" role="src" />
    <file md5sum="3c47c0ddad806318e44c4a0307179532" name="php_memcached_session.h" role="src" />
-   <file md5sum="1c6d7107702c1f9211d32d6d281c3bcb" name="php_libmemcached_compat.h" role="src" />
-   <file md5sum="571f8fdf6a3082a5b33f3491e0f8c959" name="php_libmemcached_compat.c" role="src" />
+   <file md5sum="fdfd0d785240591e81437a91e5c341e3" name="php_libmemcached_compat.h" role="src" />
+   <file md5sum="69eccf71e364283b34a16278444c6d08" name="php_libmemcached_compat.c" role="src" />
    <file md5sum="ca6c85249adc0edb67d8da8a43e52149" name="php_memcached_server.h" role="src" />
    <file md5sum="90c1f94b4756c61906960d3059b879f8" name="php_memcached_server.c" role="src" />
    <file md5sum="b340607bcb66007b13583e18d571d6dc" name="g_fmt.c" role="src" />
@@ -182,6 +183,29 @@ Fixes
   <configureoption default="no" name="with-libmemcached-dir" prompt="libmemcached directory" />
  </extsrcrelease>
  <changelog>
+  <release>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <version>
+    <release>3.0.1</release>
+    <api>3.0.0</api>
+   </version>
+   <date>2016-02-07</date>
+   <notes>
+PHP7 release of memcached extension. Note that support for libmemcached 0.x series has been discontinued
+and the oldest actively tested version is 1.0.2. It is highly recommended to use version 1.0.18 of
+libmemcached.
+
+Fixes
+ * Add API entries for flushBuffers() and getAllKeys() (#316)
+ * Ignore specific errors from memcached_dump for getAllKeys() with newer memcached servers (#315)
+ * Fix compiling with memcached binary protocol enabled (#312)
+ * Restore php_libmemcached_compat with workaround for missing memcached_exists (#314)
+ * Travis CI purge old versions of memcached and libmemcached (#309)
+   </notes>
+  </release>
   <release>
    <stability>
     <release>stable</release>
