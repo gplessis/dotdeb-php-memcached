@@ -351,6 +351,7 @@ PS_OPEN_FUNC(memcached)
 				else {
 					efree(plist_key);
 					PS_SET_MOD_DATA(memc);
+					memcached_server_list_free(servers);
 					return SUCCESS;
 				}
 			}
@@ -435,8 +436,9 @@ PS_READ_FUNC(memcached)
 	payload = memcached_get(memc, key->val, key->len, &payload_len, &flags, &status);
 
 	if (status == MEMCACHED_SUCCESS) {
+		zend_bool *is_persistent = memcached_get_user_data(memc);
 		*val = zend_string_init(payload, payload_len, 0);
-		efree(payload);
+		pefree(payload, *is_persistent);
 		return SUCCESS;
 	} else if (status == MEMCACHED_NOTFOUND) {
 		*val = ZSTR_EMPTY_ALLOC();
