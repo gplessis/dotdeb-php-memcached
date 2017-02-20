@@ -1,3 +1,10 @@
+php-memcached (3.0.3-1~dotdeb+8.1) stable; urgency=medium
+
+  [ Guillaume Plessis ]
+  * Imported Upstream version 3.0.3
+
+ -- Guillaume Plessis <gui@dotdeb.org>  Mon, 20 Feb 2017 20:13:56 +0000
+
 php-memcached (3.0.2-1~dotdeb+8.1) stable; urgency=medium
 
   [ Guillaume Plessis ]
