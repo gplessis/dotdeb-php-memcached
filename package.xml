@@ -22,10 +22,10 @@
   <email>aaron@serendipity.cx</email>
   <active>yes</active>
  </lead>
- <date>2017-02-12</date>
- <time>18:05:42</time>
+ <date>2017-02-20</date>
+ <time>03:49:05</time>
  <version>
-  <release>3.0.2</release>
+  <release>3.0.3</release>
   <api>3.0.0</api>
  </version>
  <stability>
@@ -39,9 +39,8 @@ and the oldest actively tested version is 1.0.2. It is highly recommended to use
 libmemcached.
 
 Fixes
- * Update warning for touch command in binary protocol mode with libmemcached below 1.0.18 (#322)
- * Add tests for 64-bit increment/decrement/incrementByKey/decrementByKey (#321)
- * Fix tests for 32-bit increment/decrement/incrementByKey/decrementByKey (#319)
+ * Fix crash when checking session data with older versions of libmemcached (#328)
+ * Fix crash due to zend_mm_corrupted when fetching session data (#327)
  </notes>
  <contents>
   <dir name="/">
@@ -90,6 +89,7 @@ Fixes
    <file md5sum="33f552e9f433e2c21e2d1891fd77d322" name="tests/session_basic.phpt" role="test" />
    <file md5sum="aa156bf7bb4462e9173317c7e6daaeac" name="tests/session_basic2.phpt" role="test" />
    <file md5sum="515c05e73a3d1bb4e3ed6e58d256b8c4" name="tests/session_basic3.phpt" role="test" />
+   <file md5sum="e97c28a1b11a7a513eadc4560db17780" name="tests/session_persistent.phpt" role="test" />
    <file md5sum="c7030c53a0a4a70db0eb9f4931b20efd" name="tests/set_large.phpt" role="test" />
    <file md5sum="bc001a6bdfc8535411aa509d9d40e95c" name="tests/setoptions.phpt" role="test" />
    <file md5sum="5096ca152b3344f8dab6a2182c98ace0" name="tests/touch_binary.phpt" role="test" />
@@ -137,19 +137,19 @@ Fixes
    <file md5sum="e70dd48d484892fc07e6eb7c9a8d0ed6" name="README.markdown" role="doc" />
    <file md5sum="f15b54956edc11e9bf1c995385b433b4" name="CREDITS" role="doc" />
    <file md5sum="cb564efdf78cce8ea6e4b5a4f7c05d97" name="LICENSE" role="doc" />
-   <file md5sum="eaf63578c2a0d39283d9a0dca8cd7aa7" name="ChangeLog" role="doc" />
+   <file md5sum="c0ab5eea44cabde00c23635e4d3f5535" name="ChangeLog" role="doc" />
    <file md5sum="b2a07181e396e0342f24a8d54a2a4e85" name="memcached-api.php" role="doc" />
    <file md5sum="88bd51e1d3732c9aad8f0e301c61d159" name="memcached.ini" role="doc" />
    <file md5sum="543b3b1b8571c4b9c02eafee4a6f3fa3" name="fastlz/LICENSE" role="doc" />
    <file md5sum="4f12a0f41c7dd35205ac80b62ac10364" name="config.m4" role="src" />
    <file md5sum="cf775e2ff79d560509d887a4c5992196" name="config.w32" role="src" />
    <file md5sum="8e96a66bed627dad4934be8c58092c1b" name="php_memcached.c" role="src" />
-   <file md5sum="56283035795d4a98fc93af398dc23eab" name="php_memcached.h" role="src" />
+   <file md5sum="a6eea2f762267c78502811c631b1bb25" name="php_memcached.h" role="src" />
    <file md5sum="15a9d58922652c5a7cb22fb4e851cb2b" name="php_memcached_private.h" role="src" />
-   <file md5sum="620dc83d0744bddacd845314acf54d98" name="php_memcached_session.c" role="src" />
+   <file md5sum="1adde1372322432ede424425a76ebc52" name="php_memcached_session.c" role="src" />
    <file md5sum="3c47c0ddad806318e44c4a0307179532" name="php_memcached_session.h" role="src" />
    <file md5sum="fdfd0d785240591e81437a91e5c341e3" name="php_libmemcached_compat.h" role="src" />
-   <file md5sum="69eccf71e364283b34a16278444c6d08" name="php_libmemcached_compat.c" role="src" />
+   <file md5sum="a37d5b1a87a3090cc5809f5922d90c23" name="php_libmemcached_compat.c" role="src" />
    <file md5sum="ca6c85249adc0edb67d8da8a43e52149" name="php_memcached_server.h" role="src" />
    <file md5sum="90c1f94b4756c61906960d3059b879f8" name="php_memcached_server.c" role="src" />
    <file md5sum="b340607bcb66007b13583e18d571d6dc" name="g_fmt.c" role="src" />
@@ -183,6 +183,27 @@ Fixes
   <configureoption default="no" name="with-libmemcached-dir" prompt="libmemcached directory" />
  </extsrcrelease>
  <changelog>
+  <release>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <version>
+    <release>3.0.2</release>
+    <api>3.0.0</api>
+   </version>
+   <date>2016-02-12</date>
+   <notes>
+PHP7 release of memcached extension. Note that support for libmemcached 0.x series has been discontinued
+and the oldest actively tested version is 1.0.2. It is highly recommended to use version 1.0.18 of
+libmemcached.
+
+Fixes
+ * Update warning for touch command in binary protocol mode with libmemcached below 1.0.18 (#322)
+ * Add tests for 64-bit increment/decrement/incrementByKey/decrementByKey (#321)
+ * Fix tests for 32-bit increment/decrement/incrementByKey/decrementByKey (#319)
+   </notes>
+  </release>
   <release>
    <stability>
     <release>stable</release>
